@@ -1,0 +1,35 @@
+<header class="flex justify-between items-center">
+    <img routerLink="/" class="h-20 cursor-pointer" src="assets/logo.png" alt="logo">
+    <nav class="hidden gap-4 md:flex">
+        <ng-container *ngIf="isAuth">
+            <button (click)="logout()">Выйти</button>
+        </ng-container>
+        <ng-container *ngIf="!isAuth">
+            <button (click)='openModal("Регистрация")'>Регистрация</button>
+            <button (click)='openModal("Вход")'>Войти</button>
+        </ng-container>
+    </nav>
+    <i class="icon pi pi-bars block md:hidden" (click)="isMobileModalVisible = !isMobileModalVisible"></i>
+</header>
+
+<p-dialog [(visible)]="isMobileModalVisible" [modal]="true" [style]="{ width: '100vw', height: '100vh' }" [draggable]="false"
+    [resizable]="false" header="Навигация" position="top">
+    <div class="flex flex-col gap-8 pt-4">
+        <ng-container *ngIf="isAuth">
+            <button class="text-button text-lg" (click)="logout()">Выйти</button>
+        </ng-container>
+        <ng-container *ngIf="!isAuth">
+            <button class="text-button text-lg" (click)='openModal("Регистрация")'>Регистрация</button>
+            <button class="text-button text-lg" (click)='openModal("Вход")'>Войти</button>
+        </ng-container>
+    </div>
+</p-dialog>
+
+<p-dialog [(visible)]="isAuthModalVisible" [modal]="true" [style]="{ width: 'fit-content' }" [draggable]="false"
+    [resizable]="false" [header]="chosenModal" *ngIf="isAuthModalVisible">
+    <form (ngSubmit)="submit()" class="grid gap-4" [formGroup]="userData">
+        <input type="text" formControlName="username" placeholder="Ваше имя">
+        <input type="text" formControlName="password" placeholder="Ваш пароль">
+        <button>Подтвердить</button>
+    </form>
+</p-dialog>

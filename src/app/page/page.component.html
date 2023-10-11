@@ -1,0 +1,86 @@
+<main>
+  <ng-template #content>
+    <div class="gap-8 flex flex-col xl:flex-row items-center big-container">
+      <div>
+        <h1 class="main-title">
+          Добро пожаловать в деревню <span>Мувыр</span>
+        </h1>
+        <p>
+          Уникальный мир, создающий неповторимую атмосферу уюта и гостеприимства
+          для жителей и гостей
+        </p>
+      </div>
+      <img class="main-img w-full xl:w-1/2" src="assets/main.jpg" alt="" />
+    </div>
+
+    <div class="big-container">
+      <h1 class="big-title">История "Мувыра"</h1>
+      <p-carousel [value]="carouselImgs" [responsiveOptions]="responsiveOptions">
+        <ng-template let-item pTemplate="item">
+          <img class="carousel-img" [src]="'assets/' + item" alt="" />
+        </ng-template>
+      </p-carousel>
+      <div>
+        В начале 1980-х Мувыр, основанный в 1837 году, был уничтожен. Дома
+        разрушили, людей переселили. Александр, послуживший в армии, обещал
+        вернуть родную деревню, но не мог этого сделать сразу. Провел 10 лет в
+        соседней деревне, помогая родителям и учась заочно.
+        <br /><br />
+        В 1992 году он начал строить дом в Мувыре и через год переехал с семьей.
+        Через несколько лет населенный пункт был официально восстановлен. Сейчас
+        в Мувыре есть несколько новых домов и 40 жителей, все сознательно
+        выбрали эту деревню.
+        <br /><br />
+
+        Александр занимается фермерским хозяйством, где содержат крупный рогатый
+        скот. Зарплаты составляют 25-30 тысяч рублей, и он предоставляет
+        материалы для строительства домов переселенцам бесплатно. Также его дочь
+        занимается привлечением туристов в деревню.
+        <br /><br />
+
+        Мувыр имеет висячий мост через реку и часовню в честь святого Георгия
+        Победоносца. Есть база отдыха, детская площадка и экстрим-парк.
+        <br /><br />
+
+        Александр Корепанов считает важным сохранить сельское хозяйство, но
+        сталкивается с проблемой недостатка рабочей силы и призывает принять
+        законы на федеральном уровне, чтобы привлечь молодежь в сельское
+        хозяйство.
+      </div>
+    </div>
+
+    <app-events [data]="services"> </app-events>
+
+    <div class="big-container grid gap-4">
+      <h1 class="big-title">Молочная продукция</h1>
+      <div class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4">
+        <div *ngFor="let product of milkProducts">
+          <app-card-product [data]="product"></app-card-product>
+        </div>
+      </div>
+      <h2 class="middle-title">Адреса продукции</h2>
+      <div class="flex gap-2">
+        <div *ngFor="let address of shopAddresses | async" class="address">
+          {{ address.address }}
+        </div>
+      </div>
+    </div>
+
+    <div class="big-container grid gap-4">
+        <h1 class="big-title">Сувениры</h1>
+        <div class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4">
+          <div *ngFor="let product of souvenirProducts">
+            <app-card-product [data]="product"></app-card-product>
+          </div>
+        </div>
+      </div>
+
+    <div class="big-container">
+      <h1 class="big-title">Инвесторам</h1>
+    </div>
+  </ng-template>
+
+  <div *ngIf="loadingRequests != 0; else content" class="text-center">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+</main>

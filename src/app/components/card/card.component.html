@@ -1,0 +1,88 @@
+<div class="flex flex-col w-fit shadow container">
+  <img
+    loading="lazy"
+    [src]="
+      data.img ||
+      'https://netsh.pp.ua/wp-content/uploads/2017/08/Placeholder-1.png'
+    "
+    [alt]="data.img"
+  />
+  <div class="p-4 grid gap-2 container">
+    <h1 class="middle-title">{{ data.name }}</h1>
+    <p
+      class="sub-text two-rows-text hover:underline hover:cursor-pointer"
+      (click)="toggleLines()"
+      [ngStyle]="{ '-webkit-line-clamp': lines }"
+      style="min-height: 36px;"
+    >
+      {{ data.description }}
+    </p>
+    <div class="icon-text def">
+      <i class="pi pi-money-bill"></i>
+      <p>{{ data.price }}</p>
+    </div>
+    <div class="icon-text def">
+      <i class="pi pi-clock"></i>
+      <p>{{ data.time }}</p>
+    </div>
+    <ng-container *ngIf="isRent">
+      <button style="margin-top: 6px;" (click)="order()">
+        Заказать
+      </button>
+    </ng-container>
+    <div *ngIf="isAdmin" class="admin-buttons">
+      <p-divider></p-divider>
+      <div class="flex gap-4">
+        <div class="icon-text icon-green" (click)="toggleModal()">
+          <i class="pi pi-pencil"></i>
+        </div>
+        <div class="card flex justify-content-center gap-2">
+          <p-confirmPopup></p-confirmPopup>
+          <div class="icon-text icon-red" (click)="deleteCard($event)">
+            <i class="pi pi-trash"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="isModalVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  *ngIf="data"
+  header="Редактирование"
+>
+  <div class="grid gap-8 flex-col lg:flex lg:flex-row" [formGroup]="formData">
+    <img class="modal-img" *ngIf="data.img" loading="lazy" [src]="data.img" [alt]="data.img" />
+    <div class="flex flex-col gap-4 max-w-3xl w-full">
+      <input class="big-title" formControlName="name" />
+      <p-divider></p-divider>
+      <div class="grid gap-2">
+        <div class="icon-text">
+          <i class="pi pi-money-bill"></i>
+          <input formControlName="price" />
+        </div>
+        <div class="icon-text">
+          <i class="pi pi-clock"></i>
+          <input formControlName="time" />
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <ng-container *ngIf="data.description">
+        <textarea formControlName="description"></textarea>
+        <p-divider></p-divider>
+      </ng-container>
+      <div class="flex gap-4">
+        <div class="icon-text w-fit icon-green" (click)="updateCard()">
+          <i class="pi pi-check"></i>
+        </div>
+        <div class="icon-text w-fit icon-red">
+          <i class="pi pi-times"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
