@@ -1,0 +1,84 @@
+<div class="big-container grid gap-4">
+  <h1 class="big-title">Молочная продукция</h1>
+  <div
+    class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4"
+  >
+    <div *ngFor="let product of milkProducts">
+      <app-card-product [data]="product"></app-card-product>
+    </div>
+    <button
+      *ngIf="isAdmin"
+      class="admin-button"
+      (click)="changeType('молочная продукция')"
+    >
+      <i class="pi pi-plus"></i>
+      <p>Добавить запись</p>
+    </button>
+  </div>
+  <div class="grid gap-2">
+    <h2 class="middle-title">Адреса продукции</h2>
+    <div class="flex gap-2">
+      <div *ngFor="let item of shopAddresses | async" class="address">
+        {{ item.address }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="big-container grid gap-4">
+  <h1 class="big-title">Сувениры</h1>
+  <div
+    class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4"
+  >
+    <div *ngFor="let product of souvenirProducts">
+      <app-card-product [data]="product"></app-card-product>
+    </div>
+    <button
+      *ngIf="isAdmin"
+      class="admin-button"
+      (click)="changeType('сувениры')"
+    >
+      <i class="pi pi-plus"></i>
+      <p>Добавить запись</p>
+    </button>
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="isModalVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Создание карточки"
+>
+  <div
+    class="grid gap-8 flex-col lg:flex lg:flex-row"
+    style="border-left: 0"
+    [formGroup]="formData"
+  >
+    <img
+      class="modal-img"
+      loading="lazy"
+      [src]="
+        formData.value.img ||
+        'https://netsh.pp.ua/wp-content/uploads/2017/08/Placeholder-1.png'
+      "
+      [alt]="formData.value.img"
+    />
+    <div class="flex flex-col gap-4 max-w-3xl w-full">
+      <input placeholder="Название" class="big-title" formControlName="name" />
+      <p-divider></p-divider>
+      <div class="grid gap-2">
+        <div class="icon-text">
+          <i class="pi pi-money-bill"></i>
+          <input placeholder="Стоимость" formControlName="price" />
+        </div>
+      </div>
+      <p-divider></p-divider>
+      <textarea placeholder="Описание" formControlName="description"></textarea>
+      <input placeholder="URL картинки" formControlName="img" />
+      <p-divider></p-divider>
+      <button (click)="createProduct()">Создать карточку</button>
+    </div>
+  </div>
+</p-dialog>

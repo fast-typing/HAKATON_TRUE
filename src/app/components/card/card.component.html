@@ -13,7 +13,7 @@
       class="sub-text two-rows-text hover:underline hover:cursor-pointer"
       (click)="toggleLines()"
       [ngStyle]="{ '-webkit-line-clamp': lines }"
-      style="min-height: 36px;"
+      style="min-height: 36px"
     >
       {{ data.description }}
     </p>
@@ -26,9 +26,7 @@
       <p>{{ data.time }}</p>
     </div>
     <ng-container *ngIf="isRent">
-      <button style="margin-top: 6px;" (click)="order()">
-        Заказать
-      </button>
+      <button style="margin-top: 6px" (click)="order()">Заказать</button>
     </ng-container>
     <div *ngIf="isAdmin" class="admin-buttons">
       <p-divider></p-divider>
@@ -56,9 +54,16 @@
   header="Редактирование"
 >
   <div class="grid gap-8 flex-col lg:flex lg:flex-row" [formGroup]="formData">
-    <img class="modal-img" *ngIf="data.img" loading="lazy" [src]="data.img" [alt]="data.img" />
+    <img
+      class="modal-img"
+      *ngIf="data.img"
+      loading="lazy"
+      [src]="formData.value.img"
+      [alt]="formData.value.img"
+    />
     <div class="flex flex-col gap-4 max-w-3xl w-full">
       <input class="big-title" formControlName="name" />
+      <input formControlName="img">
       <p-divider></p-divider>
       <div class="grid gap-2">
         <div class="icon-text">

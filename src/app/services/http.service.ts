@@ -45,8 +45,27 @@ export class HTTPService {
         return this._request('GET', 'read_all_products')
     }
 
+    createProduct(body: any) {
+        const token = this.cookiesService.getCookie('access_token')
+        return this._request('POST', 'create_product', body, `token=${token}`)
+    }
+
+    updateProduct(id: string, body: Service) {
+        const token = this.cookiesService.getCookie('access_token')
+        return this._request('PUT', 'update_product', body, `product_id=${id}&token=${token}`)
+    }
+
+    deleteProduct(id: string) {
+        const token = this.cookiesService.getCookie('access_token')
+        return this._request('DELETE', 'delete_product', null, `product_id=${id}&token=${token}`)
+    }
+
     getShopAddresses() {
         return this._request('GET', 'read_all_addressess')
+    }
+
+    getProblems() {
+        return this._request('GET', 'read_all_problems')
     }
 
     private _request(method: string, path: string, body?: any, query: string = ''): Observable<any> {
@@ -64,7 +83,6 @@ export class HTTPService {
         if (query) {
             url += `?${query}`
         }
-        console.log(body)
         return this.http.request(method, url, options)
     }
 }

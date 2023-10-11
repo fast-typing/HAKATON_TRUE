@@ -16,3 +16,11 @@ export interface Service {
     img: string
     id: string
 }
+
+export interface Problem {
+    collected: number
+    necessary: number
+    description: string
+    title: string
+    id: string
+}

@@ -21,9 +21,6 @@
       <i class="pi pi-money-bill"></i>
       <p>{{ data.price }}</p>
     </div>
-    <ng-container *ngIf="isRent">
-      <button style="margin-top: 6px" (click)="order()">Заказать</button>
-    </ng-container>
     <div *ngIf="isAdmin" class="admin-buttons">
       <p-divider></p-divider>
       <div class="flex gap-4">
@@ -54,11 +51,12 @@
       class="modal-img"
       *ngIf="data.img"
       loading="lazy"
-      [src]="data.img"
-      [alt]="data.img"
+      [src]="formData.value.img"
+      [alt]="formData.value.img"
     />
     <div class="flex flex-col gap-4 max-w-3xl w-full">
       <input class="big-title" formControlName="name" />
+      <input formControlName="img">
       <p-divider></p-divider>
       <div class="icon-text">
         <i class="pi pi-money-bill"></i>

@@ -15,7 +15,10 @@
 
     <div class="big-container">
       <h1 class="big-title">История "Мувыра"</h1>
-      <p-carousel [value]="carouselImgs" [responsiveOptions]="responsiveOptions">
+      <p-carousel
+        [value]="carouselImgs"
+        [responsiveOptions]="responsiveOptions"
+      >
         <ng-template let-item pTemplate="item">
           <img class="carousel-img" [src]="'assets/' + item" alt="" />
         </ng-template>
@@ -49,34 +52,24 @@
       </div>
     </div>
 
+    <!-- ТУТ ПРИКОЛЫ !!! -->
+
     <app-events [data]="services"> </app-events>
 
-    <div class="big-container grid gap-4">
-      <h1 class="big-title">Молочная продукция</h1>
-      <div class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4">
-        <div *ngFor="let product of milkProducts">
-          <app-card-product [data]="product"></app-card-product>
-        </div>
-      </div>
-      <h2 class="middle-title">Адреса продукции</h2>
-      <div class="flex gap-2">
-        <div *ngFor="let address of shopAddresses | async" class="address">
-          {{ address.address }}
-        </div>
-      </div>
-    </div>
-
-    <div class="big-container grid gap-4">
-        <h1 class="big-title">Сувениры</h1>
-        <div class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4">
-          <div *ngFor="let product of souvenirProducts">
-            <app-card-product [data]="product"></app-card-product>
-          </div>
-        </div>
-      </div>
+    <app-products [data]="products"></app-products>
 
     <div class="big-container">
       <h1 class="big-title">Инвесторам</h1>
+      <p-accordion [multiple]="true">
+        <p-accordionTab *ngFor="let problem of problems" [header]="problem.title">
+          <p> {{problem.description}} </p><br>
+          <div class="flex gap-2" [style.textDecoration]="problem.collected >= problem.necessary ? 'line-through' : ''">
+            <b>{{problem.collected | currency:'RUB':'symbol-narrow':'1.0-0'}} / {{problem.necessary | currency:'RUB':'symbol-narrow':'1.0-0'}}</b>
+          </div>
+          <p-progressBar [showValue]="false" [value]="getPercent(problem.collected / problem.necessary)"></p-progressBar>
+        </p-accordionTab>
+      </p-accordion>
+      <button class="mt-4 w-full md:w-fit" (click)="toggleDonationModal()">Пожертвовать</button>
     </div>
   </ng-template>
 
@@ -84,3 +77,19 @@
     <p-progressSpinner></p-progressSpinner>
   </div>
 </main>
+
+<p-dialog
+  [(visible)]="isDonationModalOpen"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  *ngIf="donationData"
+  header="Пожертвование"
+>
+  <div class="grid gap-4" style="border: none;" [formGroup]="donationData">
+    <p-dropdown formControlName="title" [options]="problems" optionLabel="title" optionValue="title"></p-dropdown>
+    <input formControlName="amount" placeholder="Сумма пожертвования">
+    <input formControlName="phone" placeholder="Номер телефона">
+    <button>Подтвердить</button>
+  </div>
+</p-dialog>

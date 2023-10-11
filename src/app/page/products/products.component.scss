@@ -4,6 +4,17 @@
         font-weight: 600;
     }
 
+    .main-img {
+        width: 50%;
+    }
+
+    .modal-img {
+        height: 100%;
+        width: 100%;
+        max-width: 500px;
+        object-fit: cover;
+    }
+
     h1 {
         margin-bottom: 20px;
     }
@@ -15,21 +26,16 @@
         padding: 10px;
     }
 
-    .address {
-        background-color: var(--gray);
-        padding: 4px 12px;
-        border-radius: 4px;
+    .admin-button {
+        height: auto;
+        width: 100%;
+        max-width: 400px;
+        min-height: 350px;
     }
 
-    ::ng-deep {
-        .p-dialog {
-            .p-dropdown {
-                width: 100%;
-            }
-
-            input, button {
-                width: 350px;
-            }
-        }
+    .address {
+        background-color: var(--gray);
+        padding: 6px 12px;
+        border-radius: 4px;
     }
 }

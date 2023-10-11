@@ -1,7 +1,8 @@
 import { HtmlParser } from "@angular/compiler";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, NgZone, OnInit, TemplateRef, ViewChild, ViewContainerRef, ViewRef } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { ConfirmationService, MessageService } from "primeng/api";
+import { FileUploadEvent } from "primeng/fileupload";
 import { Product, Service } from "src/app/interfaces/interface";
 import { CookiesService } from "src/app/services/cookies.service";
 import { HTTPService } from "src/app/services/http.service";
@@ -14,7 +15,6 @@ import { HTTPService } from "src/app/services/http.service";
 })
 export class CardProductComponent {
   @Input() data!: Product;
-  @Input() isRent: boolean = false;
   public isModalVisible: boolean = false;
   public lines: number = 2;
   public isAdmin: boolean = false;
@@ -24,8 +24,8 @@ export class CardProductComponent {
     private fb: FormBuilder,
     private http: HTTPService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {}
+    private confirmationService: ConfirmationService,
+  ) { }
 
   ngOnInit() {
     this.isAdmin = localStorage.getItem("isAdmin") == "true";
@@ -45,11 +45,9 @@ export class CardProductComponent {
     this.lines = this.lines == 2 ? 999 : 2;
   }
 
-  order() {}
-
   updateCard() {
     this.http
-      .updateService(this.data.id, {
+      .updateProduct(this.data.id, {
         ...this.formData.value,
         type: this.data.type,
       })
@@ -61,6 +59,7 @@ export class CardProductComponent {
           detail: "Вы успешно изменили карточку!",
         });
         this.toggleModal();
+        location.reload()
       });
   }
 
@@ -70,7 +69,7 @@ export class CardProductComponent {
       message: "Вы уверенны что хотите удалить карточку?",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        this.http.deleteService(this.data.id).subscribe((res) => {
+        this.http.deleteProduct(this.data.id).subscribe((res) => {
           this.messageService.add({
             key: "toast",
             severity: "success",

@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { HTTPService } from "src/app/services/http.service";
-import { Product, Service } from "../interfaces/interface";
+import { Problem, Product, Service } from "../interfaces/interface";
 import { Observable } from "rxjs";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-page",
@@ -10,10 +11,9 @@ import { Observable } from "rxjs";
 })
 export class PageComponent implements OnInit {
   public services: Service[] = [];
-  public milkProducts: Product[] = [];
-  public souvenirProducts: Product[] = [];
+  public products: Product[] = [];
+  public problems: Problem[] = [];
   public loadingRequests!: number;
-  public shopAddresses!: Observable<{ address: string }[]>;
   public carouselImgs: string[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
     (item) => item + ".jpg"
   );
@@ -35,10 +35,13 @@ export class PageComponent implements OnInit {
     },
   ];
 
-  constructor(private readonly http: HTTPService) {}
+  public isDonationModalOpen: boolean = false
+  public donationData!: FormGroup
+
+  constructor(private readonly http: HTTPService, private readonly fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.loadingRequests = 2;
+    this.loadingRequests = 3;
     this.http.getServices().subscribe((res: Service[]) => {
       if (!res) return;
       this.services = res;
@@ -47,23 +50,28 @@ export class PageComponent implements OnInit {
 
     this.http.getProducts().subscribe((res: Product[]) => {
       if (!res) return;
-
-      res.map((item) => {
-        switch (item.type) {
-          case "молочная продукция":
-            this.milkProducts.push(item);
-            break;
-          case "сувениры":
-            this.souvenirProducts.push(item);
-            break;
-          default:
-            break;
-        }
-      });
-
+      this.products = res
       this.loadingRequests--;
     });
 
-    this.shopAddresses = this.http.getShopAddresses();
+    this.http.getProblems().subscribe((res: Problem[]) => {
+      if (!res) return;
+      this.problems = res
+      this.donationData = this.fb.group({
+        title: this.problems[0],
+        amount: ['', [Validators.required]],
+        phone: ['', [Validators.required]]
+      })
+      this.loadingRequests--;
+    });
+
+  }
+
+  toggleDonationModal() {
+    this.isDonationModalOpen = !this.isDonationModalOpen
+  }
+
+  getPercent(num: number) {
+    return Math.floor(num * 100)
   }
 }

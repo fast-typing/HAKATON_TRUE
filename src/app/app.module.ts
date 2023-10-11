@@ -28,6 +28,11 @@ import { CardComponent } from './components/card/card.component';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { EventsComponent } from './page/events/events.component';
 import { CardProductComponent } from './components/card-product/card-product.component';
+import { ProductsComponent } from './page/products/products.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { AccordionModule } from 'primeng/accordion';
+import { TabViewModule } from 'primeng/tabview';
 
 const mapConfig: YaConfig = {
   apikey: '54f1889a-0cc9-49d2-bfa1-c8d65d1fe91e',
@@ -47,9 +52,14 @@ const routes: Routes = [
     PageComponent,
     CardComponent,
     EventsComponent,
-    CardProductComponent
+    CardProductComponent,
+    ProductsComponent,
   ],
   imports: [
+    TabViewModule,
+    AccordionModule,
+    ProgressBarModule,
+    FileUploadModule,
     ConfirmPopupModule,
     ToastModule,
     RatingModule,

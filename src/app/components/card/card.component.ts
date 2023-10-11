@@ -25,7 +25,7 @@ export class CardComponent {
     private http: HTTPService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isAdmin = localStorage.getItem("isAdmin") == "true";
@@ -64,6 +64,7 @@ export class CardComponent {
           detail: "Вы успешно изменили карточку!",
         });
         this.toggleModal();
+        location.reload()
       });
   }
 

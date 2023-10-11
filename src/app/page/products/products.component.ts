@@ -6,22 +6,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-events',
-  templateUrl: './events.component.html',
-  styleUrls: ['./events.component.scss']
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.scss']
 })
-export class EventsComponent implements OnChanges, OnInit {
-  @Input() data!: Service[]
-  public meetingService: Service[] = []
-  public muvirService: Service[] = []
-  public rentHomeService: Service[] = []
-  public rentOtherService: Service[] = []
-  
+export class ProductsComponent implements OnChanges, OnInit {
+  @Input() data!: Product[]
+  public milkProducts: Product[] = [];
+  public souvenirProducts: Product[] = [];
+  public shopAddresses!: Observable<{ address: string }[]>;
+
   public isAdmin: boolean = false
   public isModalVisible: boolean = false
   public formData!: FormGroup
-  public choosenType!: "аренда" | "мувыр" | "мероприятие" | "прокат" | "услуга"
-  
+  public choosenType!: "сувениры" | "молочная продукция"
+
   constructor(private fb: FormBuilder, private http: HTTPService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -33,32 +32,32 @@ export class EventsComponent implements OnChanges, OnInit {
       img: ['', Validators.required],
     })
     this.isAdmin = localStorage.getItem('isAdmin') == "true"
+    this.shopAddresses = this.http.getShopAddresses();
   }
 
   ngOnChanges(): void {
     this.data.map((item) => {
       switch (item.type) {
-        case 'мероприятие': this.meetingService.push(item); break
-        case 'аренда': this.rentHomeService.push(item); break
-        case 'прокат': this.rentOtherService.push(item); break
-        case 'мувыр': this.muvirService.push(item); break
-        default: break;
+        case "молочная продукция": this.milkProducts.push(item); break;
+        case "сувениры": this.souvenirProducts.push(item); break;
+        default:
+          break;
       }
-    })
+    });
   }
 
   toggleModal() {
     this.isModalVisible = !this.isModalVisible
   }
 
-  changeType(type: "аренда" | "мувыр" | "мероприятие" | "прокат" | "услуга") { 
+  changeType(type: "сувениры" | "молочная продукция") {
     this.choosenType = type
     this.toggleModal()
   }
 
-  createService() {
-    this.http.createService({...this.formData.value, type: this.choosenType}).subscribe((res) => {
-      if (!res) return 
+  createProduct() {
+    this.http.createProduct({ ...this.formData.value, type: this.choosenType }).subscribe((res) => {
+      if (!res) return
       this.messageService.add({
         key: "toast",
         severity: "success",
