@@ -20,7 +20,7 @@ export class CardComponent {
   public lines: number = 2;
   public isAdmin: boolean = false;
   public formData!: FormGroup;
-  public dates!: string;
+  public dates!: string[];
   public phone!: string;
   public disable: Date[] = [];
 
@@ -71,11 +71,15 @@ export class CardComponent {
   order() {}
 
   updateCard() {
+    let rented_days: string[] = this.dates
+    if (this.data.rented_days['123']) {
+      rented_days = [...this.dates, ...this.data.rented_days['123']]
+    }
     const body = {
       ...this.formData.value,
       type: this.data.type,
       phone_number: this.phone,
-      rented_days: { 123: this.dates },
+      rented_days: { 123: rented_days }, 
     };
     this.http.updateService(this.data.id, body).subscribe((res) => {
       this.messageService.add({
