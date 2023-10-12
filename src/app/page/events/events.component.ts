@@ -57,7 +57,7 @@ export class EventsComponent implements OnChanges, OnInit {
   }
 
   createService() {
-    this.http.createService({...this.formData.value, type: this.choosenType}).subscribe((res) => {
+    this.http.createService({...this.formData.value, type: this.choosenType, phone_number: '123', rented_days: {}}).subscribe((res) => {
       if (!res) return 
       this.messageService.add({
         key: "toast",
