@@ -14,7 +14,6 @@ import { CarouselModule } from 'primeng/carousel';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { AuthGuard } from './guard/auth.guard';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -84,7 +83,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     AngularYandexMapsModule.forRoot(mapConfig),
   ],
-  providers: [CookiesService, AuthGuard],
+  providers: [CookiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
