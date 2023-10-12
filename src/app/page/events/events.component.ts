@@ -13,7 +13,7 @@ import { MessageService } from 'primeng/api';
 export class EventsComponent implements OnChanges, OnInit {
   @Input() data!: Service[]
   public meetingService: Service[] = []
-  public muvirService: Service[] = []
+  public otherService: Service[] = []
   public rentHomeService: Service[] = []
   public rentOtherService: Service[] = []
   
@@ -41,7 +41,7 @@ export class EventsComponent implements OnChanges, OnInit {
         case 'мероприятие': this.meetingService.push(item); break
         case 'аренда': this.rentHomeService.push(item); break
         case 'прокат': this.rentOtherService.push(item); break
-        case 'мувыр': this.muvirService.push(item); break
+        case 'услуга': this.otherService.push(item); break
         default: break;
       }
     })

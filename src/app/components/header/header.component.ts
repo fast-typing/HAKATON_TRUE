@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { MessageService } from "primeng/api";
 import { CookiesService } from "src/app/services/cookies.service";
 import { HTTPService } from "src/app/services/http.service";
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: "app-header",
@@ -23,7 +24,8 @@ export class HeaderComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly route: Router,
     private readonly http: HTTPService,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit(): void {
