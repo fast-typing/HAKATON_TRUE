@@ -7,5 +7,17 @@
     .p-progress-spinner-circle {
       stroke: var(--red) !important;
     }
+
+    @media(max-width: 500px) {
+      .p-dialog {
+        max-height: 95vh;
+
+        img,
+        button,
+        input {
+          max-width: 300px !important;
+        }
+      }
+    }
   }
 }

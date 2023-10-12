@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   public isMobileModalVisible = false; //
   public chosenModal!: string; //
   public userData!: FormGroup;
+  public isAdmin!: boolean;
 
   constructor(
     private readonly cookiesService: CookiesService,
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit {
       username: ["", [Validators.required]],
       password: ["", [Validators.required]],
     });
+    this.isAdmin = localStorage.getItem("isAdmin") == "true";
   }
 
   openModal(type: string) {
@@ -94,14 +96,8 @@ export class HeaderComponent implements OnInit {
           summary: "Успех",
           detail: "Вы авторизовались!",
         });
-        this.userData.patchValue({
-          username: "",
-          password: "",
-          email: "",
-        });
         this.isAuthModalVisible = false;
         localStorage.setItem("isAdmin", res[1]);
-        console.log(res[1]);
         if (res[1]) {
           this.messageService.add({
             key: "toast",
@@ -115,12 +111,20 @@ export class HeaderComponent implements OnInit {
         const refresh_token = tokens["refresh_token"];
 
         if (access_token && refresh_token) {
+          localStorage.setItem('username', this.userData.value.username)
           this.isAuth = true;
           this.cookiesService.setCookie("access_token", access_token);
           this.cookiesService.setCookie("refresh_token", refresh_token);
           setTimeout(() => {
             location.reload();
-          }, 1000)        }
+          }, 1000);
+        }
+
+        this.userData.patchValue({
+          username: "",
+          password: "",
+          email: "",
+        });
       },
       error: (error) => {
         console.log(error);
@@ -139,7 +143,8 @@ export class HeaderComponent implements OnInit {
     this.cookiesService.deleteCookie("refresh_token");
     location.reload();
     this.isAuth = false;
-    localStorage.setItem('isAdmin', 'false')
+    localStorage.setItem("isAdmin", "false");
+    localStorage.removeItem('username')
   }
 
   routeTo(path: string) {

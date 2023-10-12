@@ -33,6 +33,12 @@
         min-height: 350px;
     }
 
+    @media(max-width: 768px) {
+        .admin-button {
+            max-width: 100%;
+        }
+    }
+
     .address {
         background-color: var(--gray);
         padding: 6px 12px;

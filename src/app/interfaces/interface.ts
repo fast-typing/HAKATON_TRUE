@@ -15,6 +15,8 @@ export interface Service {
     description: string
     img: string
     id: string
+    rented_days: any
+    phone_number: string
 }
 
 export interface Problem {

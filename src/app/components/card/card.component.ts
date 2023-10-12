@@ -16,16 +16,27 @@ export class CardComponent {
   @Input() data!: Service;
   @Input() isRent: boolean = false;
   public isModalVisible: boolean = false;
+  public isRentVisible: boolean = false;
   public lines: number = 2;
   public isAdmin: boolean = false;
   public formData!: FormGroup;
+  public dates!: string;
+  public phone!: string;
+  public disable: Date[] = [];
 
   constructor(
     private fb: FormBuilder,
     private http: HTTPService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-  ) { }
+  ) {}
+
+  ngOnChanges() {
+    const name = localStorage.getItem("username");
+    if (name) {
+      this.disable = this.data.rented_days?.[name]?.map((item: any) => new Date(Date.parse(item))) ?? [];
+    }
+  }
 
   ngOnInit() {
     this.isAdmin = localStorage.getItem("isAdmin") == "true";
@@ -38,34 +49,44 @@ export class CardComponent {
     });
   }
 
+  getDate(date: string[]): Date[] {
+    const dates = date.map((item) => new Date(item));
+    console.log(dates);
+    return dates;
+  }
+
   toggleModal() {
     this.isModalVisible = !this.isModalVisible;
+  }
+
+  toggleRent() {
+    console.log(this.dates);
+    this.isRentVisible = !this.isRentVisible;
   }
 
   toggleLines() {
     this.lines = this.lines == 2 ? 999 : 2;
   }
 
-  order() {
-    
-  }
+  order() {}
 
   updateCard() {
-    this.http
-      .updateService(this.data.id, {
-        ...this.formData.value,
-        type: this.data.type,
-      })
-      .subscribe((res) => {
-        this.messageService.add({
-          key: "toast",
-          severity: "success",
-          summary: "Успех",
-          detail: "Вы успешно изменили карточку!",
-        });
-        this.toggleModal();
-        location.reload()
+    const login = localStorage.getItem("username") ?? "123";
+    const body = {
+      ...this.formData.value,
+      type: this.data.type,
+      phone_number: this.phone,
+      rented_days: { [login]: this.dates },
+    };
+    this.http.updateService(this.data.id, body).subscribe((res) => {
+      this.messageService.add({
+        key: "toast",
+        severity: "success",
+        summary: "Успех",
+        detail: "Вы успешно изменили карточку!",
       });
+      location.reload();
+    });
   }
 
   deleteCard(event: Event) {
@@ -81,7 +102,7 @@ export class CardComponent {
             summary: "Успех",
             detail: "Вы успешно удалили карточку!",
           });
-          location.reload()
+          location.reload();
         });
       },
     });

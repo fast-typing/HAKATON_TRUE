@@ -1,6 +1,9 @@
 <header class="flex justify-between items-center">
     <img routerLink="/" class="h-20 cursor-pointer" src="assets/logo.png" alt="logo">
-    <nav class="hidden gap-4 md:flex">
+    <nav class="hidden gap-4 md:flex items-center">
+        <ng-container *ngIf="isAdmin">
+            <p style="color: var(--sub-text)">Вы админ</p>
+        </ng-container>
         <ng-container *ngIf="isAuth">
             <button (click)="logout()">Выйти</button>
         </ng-container>

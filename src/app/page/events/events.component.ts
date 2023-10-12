@@ -20,7 +20,7 @@ export class EventsComponent implements OnChanges, OnInit {
   public isAdmin: boolean = false
   public isModalVisible: boolean = false
   public formData!: FormGroup
-  public choosenType!: "аренда" | "мувыр" | "мероприятие" | "прокат" | "услуга"
+  public choosenType!: "аренда" | "мероприятие" | "прокат" | "услуга"
   
   constructor(private fb: FormBuilder, private http: HTTPService, private messageService: MessageService) { }
 
@@ -51,7 +51,7 @@ export class EventsComponent implements OnChanges, OnInit {
     this.isModalVisible = !this.isModalVisible
   }
 
-  changeType(type: "аренда" | "мувыр" | "мероприятие" | "прокат" | "услуга") { 
+  changeType(type: "аренда" | "мероприятие" | "прокат" | "услуга") { 
     this.choosenType = type
     this.toggleModal()
   }

@@ -30,6 +30,16 @@
         }
     }
 
+    @media(max-width: 768px) {
+        .container {
+            max-width: 100%;
+
+            img {
+                max-width: 100%;
+            }
+        }
+    }
+
     .map-container {
         width: 100%;
         height: 500px;
@@ -74,10 +84,44 @@
     }
 
     ::ng-deep {
+        .p-calendar {
+            width: 450px;
+            max-width: 100%;
+
+            .p-datepicker-title {
+                display: flex;
+
+                button {
+                    width: fit-content;
+                }
+            }
+        }
+
+        @media(max-width: 500px) {
+            .p-dialog {
+                max-height: 100vh;
+
+                img, button, input {
+                    max-width: 300px !important;
+                }
+            }
+        }
+
+        @media(max-width: 600px) {
+            .p-calendar {
+                width: fit-content;
+            } 
+        }
+
         .admin-buttons {
             .p-divider {
                 margin-top: 5px;
             }
+        }
+
+        .p-calendar .p-datepicker {
+            min-width: unset;
+            width: auto !important;
         }
 
         .p-dialog {
@@ -87,6 +131,13 @@
             img {
                 max-width: 450px;
                 width: 100%;
+            }
+
+            @media(max-width: 600px) {
+                img {
+                    max-width: 100%;
+                    width: 450px;
+                } 
             }
 
             .p-divider {

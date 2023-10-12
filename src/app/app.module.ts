@@ -33,6 +33,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { AccordionModule } from 'primeng/accordion';
 import { TabViewModule } from 'primeng/tabview';
+import { CalendarModule } from 'primeng/calendar';
 
 const mapConfig: YaConfig = {
   apikey: '54f1889a-0cc9-49d2-bfa1-c8d65d1fe91e',
@@ -56,6 +57,7 @@ const routes: Routes = [
     ProductsComponent,
   ],
   imports: [
+    CalendarModule,
     TabViewModule,
     AccordionModule,
     ProgressBarModule,

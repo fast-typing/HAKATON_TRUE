@@ -26,7 +26,7 @@
       <p>{{ data.time }}</p>
     </div>
     <ng-container *ngIf="isRent">
-      <button style="margin-top: 6px" (click)="order()">Заказать</button>
+      <button style="margin-top: 6px" (click)="toggleRent()">Заказать</button>
     </ng-container>
     <div *ngIf="isAdmin" class="admin-buttons">
       <p-divider></p-divider>
@@ -46,6 +46,41 @@
 </div>
 
 <p-dialog
+  [(visible)]="isRentVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Бронирование"
+>
+  <div class="grid gap-8 flex-col lg:flex lg:flex-row rent">
+    <img class="modal-img" loading="lazy" [src]="data.img" [alt]="data.img" />
+    <div class="flex flex-col gap-4 max-w-3xl w-full">
+      <h1 class="big-title">{{ data.name }}</h1>
+      <div class="grid gap-2">
+        <div class="icon-text">
+          <i class="pi pi-money-bill"></i>
+          <p>{{ data.price }}</p>
+        </div>
+        <div class="icon-text">
+          <i class="pi pi-clock"></i>
+          <p>{{ data.time }}</p>
+        </div>
+      </div>
+      <p-calendar
+        selectionMode="multiple"
+        [(ngModel)]="dates"
+        [inline]="true"
+        [disabledDates]="disable"
+        [ngModelOptions]="{standalone: true}"
+        [readonlyInput]="true"
+      ></p-calendar>
+      <input style="width: 100%;" [ngModelOptions]="{standalone: true}" [(ngModel)]="phone" placeholder="Номер телефона">
+      <button (click)="updateCard()">Забронировать</button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
   [(visible)]="isModalVisible"
   [modal]="true"
   [draggable]="false"
@@ -63,7 +98,7 @@
     />
     <div class="flex flex-col gap-4 max-w-3xl w-full">
       <input class="big-title" formControlName="name" />
-      <input formControlName="img">
+      <input formControlName="img" />
       <p-divider></p-divider>
       <div class="grid gap-2">
         <div class="icon-text">

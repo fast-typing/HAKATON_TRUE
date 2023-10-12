@@ -28,7 +28,13 @@
             }
 
             input, button {
-                width: 350px;
+                width: 100%;
+            }
+
+            @media(max-width: 600px) {
+                input {
+                    width: auto;
+                } 
             }
         }
     }

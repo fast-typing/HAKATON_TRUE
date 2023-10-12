@@ -43,21 +43,6 @@
   </div>
 </div>
 
-<div class="big-container">
-  <h1 class="big-title">Мероприятия "Мувыра"</h1>
-  <div
-    class="gap-8 grid grid-cols-1 sm:!grid-cols-1 md:!grid-cols-2 xl:!grid-cols-3 2xl:!grid-cols-4"
-  >
-    <div *ngFor="let service of muvirService">
-      <app-card [data]="service"></app-card>
-    </div>
-    <button *ngIf="isAdmin" class="admin-button" (click)="changeType('мувыр')">
-      <i class="pi pi-plus"></i>
-      <p>Добавить запись</p>
-    </button>
-  </div>
-</div>
-
 <!-- !!!!!! MODAL ДЛЯ ЗАКАЗА -->
 
 <p-dialog
