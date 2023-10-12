@@ -78,7 +78,7 @@ export class CardComponent {
     const body = {
       ...this.formData.value,
       type: this.data.type,
-      phone_number: this.phone,
+      phone_number: this.phone ?? '',
       rented_days: { 123: rented_days }, 
     };
     this.http.updateService(this.data.id, body).subscribe((res) => {
