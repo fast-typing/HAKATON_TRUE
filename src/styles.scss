@@ -9,7 +9,6 @@
 
 * {
   margin: 0;
-  padding: 0;
   text-decoration: none;
   font-family: 'Montserrat';
   // outline: 1px solid green
@@ -75,12 +74,12 @@ button {
   font-size: 48px;
   font-weight: 600;
   line-height: 60px;
+}
 
-  span {
-    font-size: 64px;
-    color: var(--red);
-    font-family: Caveat;
-  }
+.super-title {
+  font-size: 64px;
+  color: var(--red);
+  font-family: Caveat;
 }
 
 footer,

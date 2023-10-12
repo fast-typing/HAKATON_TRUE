@@ -1,56 +1,73 @@
 <main>
   <ng-template #content>
-    <div class="gap-8 flex flex-col xl:flex-row items-center big-container">
-      <div>
-        <h1 class="main-title">
-          Добро пожаловать в деревню <span>Мувыр</span>
-        </h1>
-        <p>
-          Уникальный мир, создающий неповторимую атмосферу уюта и гостеприимства
-          для жителей и гостей
-        </p>
+    <ng-template #adminMainBlock [formGroup]="formMainInfo">
+      <div class="gap-8 flex flex-col xl:flex-row items-center big-container">
+        <div>
+          <input style="width: fit-content;" placeholder="Заголовок" class="main-title" formControlName="title"><br>
+          <input placeholder="Выделенный заголовок" class="super-title" formControlName="supertitle"><br>
+          <textarea style="resize: both; width: 100%;" placeholder="URL картинки" formControlName="subtitle"></textarea>
+        </div>
+        <img class="main-img w-full xl:w-1/2" [src]="formMainInfo.value.main_image" alt="" />
       </div>
-      <img class="main-img w-full xl:w-1/2" src="assets/main.jpg" alt="" />
-    </div>
+      <input placeholder="URL картинки" formControlName="main_image"><br><br>
+      <button (click)="changeMain()">Сохранить</button>
 
-    <div class="big-container">
-      <h1 class="big-title">История "Мувыра"</h1>
-      <p-carousel
-        [value]="carouselImgs"
-        [responsiveOptions]="responsiveOptions"
-      >
-        <ng-template let-item pTemplate="item">
-          <img class="carousel-img" [src]="'assets/' + item" alt="" />
-        </ng-template>
-      </p-carousel>
-      <div>
-        В начале 1980-х Мувыр, основанный в 1837 году, был уничтожен. Дома
-        разрушили, людей переселили. Александр, послуживший в армии, обещал
-        вернуть родную деревню, но не мог этого сделать сразу. Провел 10 лет в
-        соседней деревне, помогая родителям и учась заочно.
-        <br /><br />
-        В 1992 году он начал строить дом в Мувыре и через год переехал с семьей.
-        Через несколько лет населенный пункт был официально восстановлен. Сейчас
-        в Мувыре есть несколько новых домов и 40 жителей, все сознательно
-        выбрали эту деревню.
-        <br /><br />
-
-        Александр занимается фермерским хозяйством, где содержат крупный рогатый
-        скот. Зарплаты составляют 25-30 тысяч рублей, и он предоставляет
-        материалы для строительства домов переселенцам бесплатно. Также его дочь
-        занимается привлечением туристов в деревню.
-        <br /><br />
-
-        Мувыр имеет висячий мост через реку и часовню в честь святого Георгия
-        Победоносца. Есть база отдыха, детская площадка и экстрим-парк.
-        <br /><br />
-
-        Александр Корепанов считает важным сохранить сельское хозяйство, но
-        сталкивается с проблемой недостатка рабочей силы и призывает принять
-        законы на федеральном уровне, чтобы привлечь молодежь в сельское
-        хозяйство.
+      <div class="big-container">
+        <h1 class="big-title">История "Мувыра"</h1>
+        <p-carousel
+          [value]="mainInfo.carousel_image"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-img pTemplate="item">
+            <img class="carousel-img" [src]="img" [alt]="img" />
+          </ng-template>
+        </p-carousel>
+        <div class="flex flex-wrap gap-4 mb-4" formArrayName="carousel_image">
+          <div *ngFor="let el of carousel_image.controls; let i = index" class="flex gap-1">
+            <input [formControlName]="i" type="text">
+            <div class="icon-text icon-red w-fit" (click)="removeCarouselImage(i)">
+              <i class="pi pi-times"></i>
+            </div>
+          </div>
+          <div class="icon-text icon-green w-fit" (click)="addToCarouselImage()">
+            <i class="pi pi-plus"></i>
+          </div>
+        </div>
+        <textarea style="width: 100%;" formControlName="history_block">
+          {{mainInfo.history_block}}
+        </textarea><br><br>
+        <button (click)="changeMain()">Сохранить</button>
       </div>
-    </div>
+    </ng-template>
+
+    <ng-container *ngIf="!isAdmin; else adminMainBlock">
+      <div class="gap-8 flex flex-col xl:flex-row items-center big-container">
+        <div>
+          <h1 class="main-title">
+            {{mainInfo.title}} <span class="super-title">{{mainInfo.supertitle}}</span>
+          </h1>
+          <p>
+            {{mainInfo.subtitle}}
+          </p>
+        </div>
+        <img class="main-img w-full xl:w-1/2" [src]="mainInfo.main_image" alt="" />
+      </div>
+  
+      <div class="big-container">
+        <h1 class="big-title">История "Мувыра"</h1>
+        <p-carousel
+          [value]="mainInfo.carousel_image"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-img pTemplate="item">
+            <img class="carousel-img" [src]="img" [alt]="img" />
+          </ng-template>
+        </p-carousel>
+        <div>
+          {{mainInfo.history_block}}
+        </div>
+      </div>
+    </ng-container>
 
     <!-- ТУТ ПРИКОЛЫ !!! -->
 

@@ -32,10 +32,10 @@ export class CardComponent {
   ) {}
 
   ngOnChanges() {
-    const name = localStorage.getItem("username");
-    if (name) {
-      this.disable = this.data.rented_days?.[name]?.map((item: any) => new Date(Date.parse(item))) ?? [];
-    }
+    this.disable =
+      this.data.rented_days?.["123"]?.map(
+        (item: any) => new Date(Date.parse(item))
+      ) ?? [];
   }
 
   ngOnInit() {
@@ -71,12 +71,11 @@ export class CardComponent {
   order() {}
 
   updateCard() {
-    const login = localStorage.getItem("username") ?? "123";
     const body = {
       ...this.formData.value,
       type: this.data.type,
       phone_number: this.phone,
-      rented_days: { [login]: this.dates },
+      rented_days: { 123: this.dates },
     };
     this.http.updateService(this.data.id, body).subscribe((res) => {
       this.messageService.add({

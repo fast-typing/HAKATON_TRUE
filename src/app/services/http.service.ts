@@ -68,6 +68,14 @@ export class HTTPService {
         return this._request('GET', 'read_all_problems')
     }
 
+    getMainInfo() {
+        return this._request('GET', 'read_all_main_pages', null)
+    }
+
+    updateMainInfo(body: any) {
+        return this._request('PUT', 'update_main_page', body, 'main_page_id=5')
+    }
+
     private _request(method: string, path: string, body?: any, query: string = ''): Observable<any> {
         const token = this.cookiesService.getCookie('token');
         let headers = new HttpHeaders();

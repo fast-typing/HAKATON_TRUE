@@ -2,7 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { HTTPService } from "src/app/services/http.service";
 import { Problem, Product, Service } from "../interfaces/interface";
 import { Observable } from "rxjs";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-page",
@@ -13,6 +14,7 @@ export class PageComponent implements OnInit {
   public services: Service[] = [];
   public products: Product[] = [];
   public problems: Problem[] = [];
+  public mainInfo!: any
   public loadingRequests!: number;
   public carouselImgs: string[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(
     (item) => item + ".jpg"
@@ -34,14 +36,17 @@ export class PageComponent implements OnInit {
       numScroll: 1,
     },
   ];
-
+  public formMainInfo!: FormGroup
   public isDonationModalOpen: boolean = false
   public donationData!: FormGroup
+  public isAdmin!: boolean
 
-  constructor(private readonly http: HTTPService, private readonly fb: FormBuilder) {}
+  constructor(private readonly http: HTTPService, private readonly fb: FormBuilder, private messageService: MessageService) {}
 
   ngOnInit(): void {
-    this.loadingRequests = 3;
+    this.isAdmin = localStorage.getItem('isAdmin') == "true"
+
+    this.loadingRequests = 4;
     this.http.getServices().subscribe((res: Service[]) => {
       if (!res) return;
       this.services = res;
@@ -65,6 +70,48 @@ export class PageComponent implements OnInit {
       this.loadingRequests--;
     });
 
+    this.http.getMainInfo().subscribe((res) => {
+      if (!res) return;
+      this.mainInfo = res[0]
+      this.formMainInfo = this.fb.group({
+        title: this.mainInfo.title,
+        subtitle: this.mainInfo.subtitle,
+        main_image: this.mainInfo.main_image,
+        history_block: this.mainInfo.history_block,
+        supertitle: this.mainInfo.supertitle,
+        carousel_image: this.fb.array(this.mainInfo.carousel_image)
+      })
+      console.log(this.mainInfo)
+      this.formMainInfo.valueChanges.subscribe((item) => {
+        console.log(item)
+      })
+      this.loadingRequests--
+    })
+  }
+
+  get carousel_image() : FormArray {
+    return this.formMainInfo.get("carousel_image") as FormArray
+  }
+
+  addToCarouselImage() {
+    this.carousel_image.push(new FormControl())
+  }
+
+  removeCarouselImage(i: number) {
+    this.carousel_image.removeAt(i)
+  }
+
+  changeMain() {
+    this.http.updateMainInfo({...this.formMainInfo.value, carousel_image: this.carousel_image.value}).subscribe((res) => {
+      if (!res) return
+      this.messageService.add({
+        key: "toast",
+        severity: "success",
+        summary: "Успех",
+        detail: "Вы успешно обновили информацию!",
+      });
+      location.reload()
+    })
   }
 
   toggleDonationModal() {
